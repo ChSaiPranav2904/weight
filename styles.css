@@ -1,0 +1,227 @@
+:root {
+    --bg-dark: #09090b;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    --accent-green: #32d74b;
+    --accent-blue: #0a84ff;
+    --accent-orange: #ff9f0a;
+    --accent-red: #ff453a;
+    --accent-purple: #bf5af2;
+    --accent-yellow: #ffd60a;
+
+    --radius-lg: 24px;
+    --radius-md: 16px;
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+    background-image: radial-gradient(circle at 15% 50%, rgba(50, 215, 75, 0.05), transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(10, 132, 255, 0.05), transparent 25%);
+    background-attachment: fixed;
+}
+
+.highlight { color: var(--accent-green); }
+.accent-blue { color: var(--accent-blue); }
+.accent-green { color: var(--accent-green); }
+.accent-orange { color: var(--accent-orange); }
+.accent-red { color: var(--accent-red); }
+.accent-purple { color: var(--accent-purple); }
+.accent-yellow { color: var(--accent-yellow); }
+
+/* Glassmorphism Classes */
+.glass-header, .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* Header */
+.glass-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.date-display {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 4px 0 12px;
+}
+
+.quote {
+    font-style: italic;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* Progress Rings */
+.progress-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: conic-gradient(var(--accent-green) var(--progress, 0%), var(--glass-border) 0);
+    position: relative;
+    font-weight: 600;
+}
+
+.progress-ring::before {
+    content: '';
+    position: absolute;
+    width: 68px;
+    height: 68px;
+    background: var(--bg-dark);
+    border-radius: 50%;
+}
+
+.progress-ring span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+/* Metrics */
+.metrics-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.metric {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.02);
+    padding: 16px;
+    border-radius: var(--radius-md);
+}
+
+.metric i { font-size: 1.5rem; }
+.metric h4 { font-size: 0.8rem; color: var(--text-secondary); }
+.metric p { font-size: 1.1rem; font-weight: 600; }
+
+/* Water UI */
+.water-ui {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 16px;
+}
+
+.water-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    flex: 1;
+}
+
+button {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+    border: 1px solid var(--glass-border);
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+button:hover { background: rgba(255,255,255,0.2); }
+button.btn-outline { background: transparent; color: var(--accent-red); border-color: rgba(255,69,58,0.3); }
+
+/* Checkboxes & Lists */
+.routine-grid {
+    display: grid;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.routine-section h4 { color: var(--accent-blue); margin-bottom: 8px; font-size: 0.9rem;}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.checkbox-item:hover { background: rgba(255,255,255,0.05); }
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--accent-green);
+    cursor: pointer;
+}
+
+/* Inputs & Textareas */
+input[type="number"], textarea {
+    width: 100%;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 12px;
+    border-radius: 8px;
+    outline: none;
+    margin-bottom: 12px;
+}
+
+textarea { resize: vertical; min-height: 60px; }
+input[type="number"]:focus, textarea:focus { border-color: var(--accent-blue); }
+
+.weight-input-group { display: flex; gap: 8px; margin-top: 16px; }
+
+/* Tables */
+.table-container { overflow-x: auto; margin-top: 16px; }
+table { width: 100%; border-collapse: collapse; }
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 0.9rem;
+}
+th { color: var(--text-secondary); font-weight: 500; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .glass-header { flex-direction: column; text-align: center; gap: 16px; }
+    .daily-progress-container { display: flex; flex-direction: column; align-items: center; }
+}
