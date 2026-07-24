@@ -10,12 +10,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="glass-header">
+    <header class="glass-header" data-tilt data-tilt-max="2" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
         <div class="user-info">
             <h1>Welcome, <span class="highlight">Sai Pranav</span></h1>
             <p id="current-date" class="date-display"></p>
-            <p class="quote">"Discipline is choosing between what you want now and what you want most."</p>
+            
+            <!-- NEW: Rank & XP System UI -->
+            <div class="rank-container">
+                <div class="rank-badge" id="rank-badge">Bronze</div>
+                <div class="xp-wrapper">
+                    <div class="xp-bar-bg">
+                        <div class="xp-bar-fill" id="xp-bar"></div>
+                    </div>
+                    <p class="xp-text"><span id="current-xp">0</span> / <span id="next-rank-xp">500</span> XP to Next Rank</p>
+                </div>
+            </div>
         </div>
+        
         <div class="daily-progress-container">
             <div class="progress-ring" id="main-progress-ring">
                 <span id="main-progress-text">0%</span>
@@ -25,8 +36,8 @@
     </header>
 
     <main class="dashboard-grid">
-        <!-- Key Metrics -->
-        <section class="glass-card metrics-card">
+        <!-- Added data-tilt attributes to all cards for the 3D Cinematic effect -->
+        <section class="glass-card metrics-card" data-tilt data-tilt-max="3" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
             <div class="metric">
                 <i class="fa-solid fa-weight-scale accent-blue"></i>
                 <div>
@@ -41,25 +52,10 @@
                     <p id="val-bmi">40.1</p>
                 </div>
             </div>
-            <div class="metric">
-                <i class="fa-solid fa-fire accent-orange"></i>
-                <div>
-                    <h4>Calories</h4>
-                    <p id="val-calories">2000 kcal</p>
-                </div>
-            </div>
-            <div class="metric">
-                <i class="fa-solid fa-drumstick-bite accent-red"></i>
-                <div>
-                    <h4>Protein</h4>
-                    <p id="val-protein">150g</p>
-                </div>
-            </div>
         </section>
 
-        <!-- Water Tracker -->
-        <section class="glass-card water-card">
-            <h3><i class="fa-solid fa-droplet accent-blue"></i> Water Tracker</h3>
+        <section class="glass-card water-card" data-tilt data-tilt-max="2" data-tilt-glare data-tilt-max-glare="0.1">
+            <h3><i class="fa-solid fa-droplet accent-blue"></i> Water Tracker (+10 XP)</h3>
             <div class="water-ui">
                 <div class="progress-ring" id="water-ring">
                     <span id="water-text">0L</span>
@@ -73,29 +69,13 @@
             </div>
         </section>
 
-        <!-- Daily Routine -->
-        <section class="glass-card routine-card">
-            <h3><i class="fa-solid fa-list-check accent-green"></i> Daily Routine</h3>
-            <div class="routine-grid" id="routine-container">
-                <!-- Injected via JS -->
-            </div>
+        <section class="glass-card routine-card" data-tilt data-tilt-max="1" data-tilt-glare data-tilt-max-glare="0.05">
+            <h3><i class="fa-solid fa-list-check accent-green"></i> Daily Routine (+15 XP)</h3>
+            <div class="routine-grid" id="routine-container"></div>
         </section>
 
-        <!-- Weight Chart -->
-        <section class="glass-card chart-card">
-            <h3><i class="fa-solid fa-chart-line accent-purple"></i> Weight Progress</h3>
-            <div class="chart-container">
-                <canvas id="weightChart"></canvas>
-            </div>
-            <div class="weight-input-group">
-                <input type="number" id="new-weight" step="0.1" placeholder="Today's Weight (kg)">
-                <button onclick="logWeight()">Log</button>
-            </div>
-        </section>
-
-        <!-- Diet Planner -->
-        <section class="glass-card diet-card">
-            <h3><i class="fa-solid fa-leaf accent-green"></i> Diet Planner (Vegetarian)</h3>
+        <section class="glass-card diet-card" data-tilt data-tilt-max="1" data-tilt-glare data-tilt-max-glare="0.05">
+            <h3><i class="fa-solid fa-leaf accent-green"></i> Diet Planner (+20 XP)</h3>
             <div class="table-container">
                 <table id="diet-table">
                     <thead>
@@ -103,38 +83,34 @@
                             <th>Meal</th>
                             <th>Food</th>
                             <th>Cals</th>
-                            <th>Protein</th>
                             <th>Status</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Injected via JS -->
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </section>
 
-        <!-- Gym & Habits -->
-        <section class="glass-card gym-card">
-            <h3><i class="fa-solid fa-dumbbell accent-orange"></i> Habits & Gym</h3>
-            <div class="habits-list" id="habits-container">
-                <!-- Injected via JS -->
-            </div>
+        <section class="glass-card gym-card" data-tilt data-tilt-max="1" data-tilt-glare data-tilt-max-glare="0.05">
+            <h3><i class="fa-solid fa-dumbbell accent-orange"></i> Habits & Gym (+25 XP)</h3>
+            <div class="habits-list" id="habits-container"></div>
         </section>
 
-        <!-- Journal -->
-        <section class="glass-card notes-card">
-            <h3><i class="fa-solid fa-book accent-yellow"></i> Daily Journal</h3>
-            <textarea id="journal-wins" placeholder="Wins Today..."></textarea>
-            <textarea id="journal-challenges" placeholder="Challenges..."></textarea>
-            <textarea id="journal-plan" placeholder="Tomorrow's Plan..."></textarea>
-            <button onclick="saveNotes()" style="width:100%; margin-top:10px;">Save Journal</button>
+        <section class="glass-card chart-card" data-tilt data-tilt-max="1">
+            <h3><i class="fa-solid fa-chart-line accent-purple"></i> Weight Progress</h3>
+            <div class="chart-container"><canvas id="weightChart"></canvas></div>
+            <div class="weight-input-group">
+                <input type="number" id="new-weight" step="0.1" placeholder="Today's Weight (kg)">
+                <button onclick="logWeight()">Log Weight</button>
+            </div>
         </section>
     </main>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Vanilla Tilt for Cinematic UI -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
