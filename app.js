@@ -1,4 +1,4 @@
-// Default User Profile state
+// Default User Profile state with BITS-HYD Mess Plan
 const userProfile = {
     name: "Sai Pranav",
     height: 170, // cm
@@ -10,8 +10,7 @@ const userProfile = {
         Morning: [
             { task: "Wake up before 7 AM", done: false },
             { task: "Drink Water", done: false },
-            { task: "Stretching", done: false },
-            { task: "Breakfast (High Protein)", done: false }
+            { task: "Stretching", done: false }
         ],
         College: [
             { task: "Attend Classes", done: false },
@@ -35,18 +34,56 @@ const userProfile = {
         { task: "Sleep 8 Hours", done: false },
         { task: "Meditation", done: false }
     ],
-    diet: [
-        { meal: "Breakfast", food: "Oats & Whey", cals: 400, protein: 35, status: false },
-        { meal: "Lunch", food: "Soya Chunks & Quinoa", cals: 600, protein: 45, status: false },
-        { meal: "Snack", food: "Greek Yogurt", cals: 150, protein: 15, status: false },
-        { meal: "Dinner", food: "Paneer Tikka & Salad", cals: 500, protein: 30, status: false }
-    ],
+    weeklyDiet: {
+        Monday: [
+            { meal: "Breakfast", food: "Idli, Sambar & Milk", cals: 350, protein: 15, status: false },
+            { meal: "Lunch", food: "Rajma Masala, Tori Sabzi, Salad, Curd, 2 Roti", cals: 500, protein: 22, status: false },
+            { meal: "Dinner", food: "Dal, Salad, Curd, 2 Roti", cals: 400, protein: 16, status: false }
+        ],
+        Tuesday: [
+            { meal: "Breakfast", food: "Uttapam, Sambar & Milk", cals: 350, protein: 14, status: false },
+            { meal: "Lunch", food: "Moong Dal, Brinjal, Salad, Curd, 2 Chapati", cals: 450, protein: 18, status: false },
+            { meal: "Dinner", food: "Mealmaker (Soya) Curry, Beans, Curd, 2 Roti", cals: 500, protein: 35, status: false }
+        ],
+        Wednesday: [
+            { meal: "Breakfast", food: "Besan Chilla, Sambar & Milk", cals: 320, protein: 18, status: false },
+            { meal: "Lunch", food: "Black Chana Masala, Veg Kolhapuri, Curd, 2 Chapati", cals: 500, protein: 20, status: false },
+            { meal: "Dinner", food: "Dal Fry, Extra Paneer Curry, Salad, 2 Roti", cals: 600, protein: 32, status: false }
+        ],
+        Thursday: [
+            { meal: "Breakfast", food: "Rawa Idli/Dosa, Milk", cals: 350, protein: 12, status: false },
+            { meal: "Lunch", food: "Chole, Carrot Peas Dry, Salad, Curd, 2 Roti", cals: 550, protein: 22, status: false },
+            { meal: "Dinner", food: "Dal Makhani, Bhindi Masala, Curd, 2 Roti", cals: 500, protein: 18, status: false }
+        ],
+        Friday: [
+            { meal: "Breakfast", food: "Veg Upma, Milk", cals: 300, protein: 10, status: false },
+            { meal: "Lunch", food: "Soya Chunks, Dal Makhani, Bottle Gourd, Curd, 2 Chapati", cals: 550, protein: 35, status: false },
+            { meal: "Dinner", food: "Rajma Masala, Tomato Dal, Curd, 2 Roti", cals: 500, protein: 22, status: false }
+        ],
+        Saturday: [
+            { meal: "Breakfast", food: "Veg Mini Uthappa, Milk", cals: 320, protein: 12, status: false },
+            { meal: "Lunch", food: "Mixed Dal, Gobi Masala, Curd, 2 Roti", cals: 450, protein: 18, status: false },
+            { meal: "Dinner", food: "Lobiya Sabzi, Dal, Curd, 2 Roti", cals: 480, protein: 20, status: false }
+        ],
+        Sunday: [
+            { meal: "Breakfast", food: "Poha, Milk", cals: 300, protein: 10, status: false },
+            { meal: "Lunch", food: "Gongura Dal, Tindly Masala, Curd, 2 Chapati", cals: 450, protein: 16, status: false },
+            { meal: "Dinner", food: "Dal Tadka, Extra Paneer Curry, Curd, 2 Roti", cals: 600, protein: 32, status: false }
+        ]
+    },
     notes: { wins: "", challenges: "", plan: "" },
     lastResetDate: new Date().toISOString().split('T')[0]
 };
 
 // Load or Initialize State
 let state = JSON.parse(localStorage.getItem('saiHealthState')) || userProfile;
+
+// Data structure migration (If upgrading from previous version)
+if (!state.weeklyDiet) {
+    state.weeklyDiet = userProfile.weeklyDiet;
+    delete state.diet; // Remove old format
+    saveState();
+}
 
 // Reset daily tasks if it's a new day
 const todayDate = new Date().toISOString().split('T')[0];
@@ -56,7 +93,12 @@ if (state.lastResetDate !== todayDate) {
         state.routine[period].forEach(item => item.done = false);
     });
     state.habits.forEach(h => h.done = false);
-    state.diet.forEach(d => d.status = false);
+    
+    // Reset diet status for all days
+    Object.keys(state.weeklyDiet).forEach(day => {
+        state.weeklyDiet[day].forEach(item => item.status = false);
+    });
+
     state.notes = { wins: "", challenges: "", plan: "" };
     state.lastResetDate = todayDate;
     saveState();
@@ -152,9 +194,16 @@ function renderHabits() {
 }
 
 function renderDiet() {
+    const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    const todayDiet = state.weeklyDiet[todayStr] || state.weeklyDiet['Monday'];
+
     const tbody = document.querySelector('#diet-table tbody');
     tbody.innerHTML = '';
-    state.diet.forEach((item, index) => {
+    
+    // Update the card title to show the current day
+    document.querySelector('.diet-card h3').innerHTML = `<i class="fa-solid fa-leaf accent-green"></i> Diet Planner (${todayStr})`;
+
+    todayDiet.forEach((item, index) => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
             <td>${item.meal}</td>
@@ -162,7 +211,7 @@ function renderDiet() {
             <td>${item.cals}</td>
             <td>${item.protein}g</td>
             <td>
-                <input type="checkbox" ${item.status ? 'checked' : ''} onchange="toggleDiet(${index}, this.checked)">
+                <input type="checkbox" ${item.status ? 'checked' : ''} onchange="toggleDiet('${todayStr}', ${index}, this.checked)">
             </td>
         `;
         tbody.appendChild(tr);
@@ -178,8 +227,8 @@ function toggleHabit(index, value) {
     state.habits[index].done = value;
     saveState(); renderHabits();
 }
-function toggleDiet(index, value) {
-    state.diet[index].status = value;
+function toggleDiet(day, index, value) {
+    state.weeklyDiet[day][index].status = value;
     saveState(); renderDiet();
 }
 
@@ -191,10 +240,15 @@ function updateProgress() {
     Object.values(state.routine).forEach(period => {
         period.forEach(t => { total++; if (t.done) completed++; });
     });
+    
     // Habits
     state.habits.forEach(h => { total++; if (h.done) completed++; });
-    // Diet
-    state.diet.forEach(d => { total++; if (d.status) completed++; });
+    
+    // Diet (Only calculate progress for TODAY'S diet)
+    const todayStr = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+    const todayDiet = state.weeklyDiet[todayStr] || state.weeklyDiet['Monday'];
+    todayDiet.forEach(d => { total++; if (d.status) completed++; });
+    
     // Water
     total++; 
     if (state.waterIntake >= state.dailyWaterGoal) completed++;
@@ -272,6 +326,7 @@ function saveNotes() {
     saveState();
     alert("Journal saved!");
 }
+
 // Register Service Worker for PWA Offline Support
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
