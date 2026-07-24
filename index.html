@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sai Pranav | Health & Routine Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="glass-header">
+        <div class="user-info">
+            <h1>Welcome, <span class="highlight">Sai Pranav</span></h1>
+            <p id="current-date" class="date-display"></p>
+            <p class="quote">"Discipline is choosing between what you want now and what you want most."</p>
+        </div>
+        <div class="daily-progress-container">
+            <div class="progress-ring" id="main-progress-ring">
+                <span id="main-progress-text">0%</span>
+            </div>
+            <p>Daily Completion</p>
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- Key Metrics -->
+        <section class="glass-card metrics-card">
+            <div class="metric">
+                <i class="fa-solid fa-weight-scale accent-blue"></i>
+                <div>
+                    <h4>Weight</h4>
+                    <p><span id="val-weight">116</span> kg / <span id="val-goal-weight">90</span> kg</p>
+                </div>
+            </div>
+            <div class="metric">
+                <i class="fa-solid fa-calculator accent-green"></i>
+                <div>
+                    <h4>BMI</h4>
+                    <p id="val-bmi">40.1</p>
+                </div>
+            </div>
+            <div class="metric">
+                <i class="fa-solid fa-fire accent-orange"></i>
+                <div>
+                    <h4>Calories</h4>
+                    <p id="val-calories">2000 kcal</p>
+                </div>
+            </div>
+            <div class="metric">
+                <i class="fa-solid fa-drumstick-bite accent-red"></i>
+                <div>
+                    <h4>Protein</h4>
+                    <p id="val-protein">150g</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Water Tracker -->
+        <section class="glass-card water-card">
+            <h3><i class="fa-solid fa-droplet accent-blue"></i> Water Tracker</h3>
+            <div class="water-ui">
+                <div class="progress-ring" id="water-ring">
+                    <span id="water-text">0L</span>
+                </div>
+                <div class="water-buttons">
+                    <button onclick="addWater(0.25)">+250ml</button>
+                    <button onclick="addWater(0.50)">+500ml</button>
+                    <button onclick="addWater(1.0)">+1L</button>
+                    <button onclick="resetWater()" class="btn-outline">Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Routine -->
+        <section class="glass-card routine-card">
+            <h3><i class="fa-solid fa-list-check accent-green"></i> Daily Routine</h3>
+            <div class="routine-grid" id="routine-container">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Weight Chart -->
+        <section class="glass-card chart-card">
+            <h3><i class="fa-solid fa-chart-line accent-purple"></i> Weight Progress</h3>
+            <div class="chart-container">
+                <canvas id="weightChart"></canvas>
+            </div>
+            <div class="weight-input-group">
+                <input type="number" id="new-weight" step="0.1" placeholder="Today's Weight (kg)">
+                <button onclick="logWeight()">Log</button>
+            </div>
+        </section>
+
+        <!-- Diet Planner -->
+        <section class="glass-card diet-card">
+            <h3><i class="fa-solid fa-leaf accent-green"></i> Diet Planner (Vegetarian)</h3>
+            <div class="table-container">
+                <table id="diet-table">
+                    <thead>
+                        <tr>
+                            <th>Meal</th>
+                            <th>Food</th>
+                            <th>Cals</th>
+                            <th>Protein</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Injected via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Gym & Habits -->
+        <section class="glass-card gym-card">
+            <h3><i class="fa-solid fa-dumbbell accent-orange"></i> Habits & Gym</h3>
+            <div class="habits-list" id="habits-container">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Journal -->
+        <section class="glass-card notes-card">
+            <h3><i class="fa-solid fa-book accent-yellow"></i> Daily Journal</h3>
+            <textarea id="journal-wins" placeholder="Wins Today..."></textarea>
+            <textarea id="journal-challenges" placeholder="Challenges..."></textarea>
+            <textarea id="journal-plan" placeholder="Tomorrow's Plan..."></textarea>
+            <button onclick="saveNotes()" style="width:100%; margin-top:10px;">Save Journal</button>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
